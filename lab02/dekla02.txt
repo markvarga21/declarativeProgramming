@@ -1,0 +1,129 @@
+fun lengthvec (x,y) = Math.sqrt(x*x+y*y);
+fun negvec (x,y) : real*real = (~x,~y);
+fun addvec((x1,y1), (x2,y2)) : real*real = (x1+x2, y1+y2);
+fun subvec(v1,v2) = addvec(v1, negvec v2);
+fun distance (v1, v2) = lengthvec (subvec (v1,v2));
+
+distance((1.0,1.0), (0.0,0.0));
+
+val henryV = 
+{name = "Henry V",
+born = 1387,
+died = 1422,
+crowned = 1413}
+
+val richardIII = 
+{name = "Richard III",
+born = 1452,
+died = 1485,
+crowned = 1483}
+
+type king = {name: string,
+born: int,
+died: int,
+crowned: int}
+
+fun lifetime (k: king) = #died k - #born k;
+fun lifetime' ({born,died, ...}: king) = died - born;
+
+lifetime henryV;
+lifetime richardIII;
+
+fun fact n = if n=0 then 1 else n * fact (n-1);
+
+fact 10;
+
+fun facti (n,p) = if n=0 then p else facti(n-1, n*p);
+
+facti(10,1);
+
+(*facti(10, 1) -> facti(9,10) -> facti(8.90) -> facti(7,720) -> ... *)
+
+fun gcd (m,n) = if m=0 then n else gcd (n mod m, m);
+
+(*A gcd-nek miert nem kell osszehasonlitania  az argumentumokat?*)
+
+fun gcd' (n,m) = if n=m then m
+  else if n>m then gcd'(n-m, m)
+  else gcd'(m,n);
+
+gcd'(12,18);
+gcd(12,18);
+gcd(18,12);
+
+fun add(n, m) = if m=0 then n else add(add(n,m-1), 1);
+
+fun power (x, k) : real =
+if k=1 then x
+else if k mod 2 = 0 then power(x*x, k div 2)
+else x* power (x*x, k div 2);
+
+power(2.0,5);
+
+fun nextfib (prev, curr: int) = (curr, prev + curr);
+
+nextfib(0,1);
+nextfib it;
+nextfib it;
+nextfib it;
+nextfib it;
+nextfib it;
+nextfib it;
+
+fun fibpair n = if n = 1 then (0,1) else nextfib (fibpair(n-1));
+fibpair 6;
+
+(*számítsuk ki az n. Fibonacci-számot*)
+
+fun itfib (n, prev, curr) = if n=1 then curr
+  else itfib ((n-1), curr, prev + curr);
+
+itfib(10, 0, 1);
+
+(*Newton-Raphson-módszer*)
+
+fun findroot (a, x, acc) = let val nextx = (a/x+x)/2.0
+in if abs (x-nextx) < acc*x then nextx
+  else findroot(a, nextx, acc)
+end;
+
+fun sqroot a = findroot (a, 1.0, 1.0E~10);
+
+sqroot 2.0;
+
+(*Írjuk fel a másodfokú egyenlet megoldóképletét*)
+
+fun suml [] = 0
+  | suml (x::xs) = x + suml xs;
+
+suml [1, 2, 3, 4, 5];
+
+(*
+1. Írjunk meg egy iteratív vátozatát
+2. Írjuk  fel a listaelemek szorzatát
+*)
+
+hd [1,2,3];
+tl [1,2,3];
+
+(*myhd, mytl*)
+
+
+List.length [1,2,3];
+
+(*Írjuk meg a mylength függvényt*)
+
+fun ip ([], []) = 0 
+| ip ((x::xs), (y::ys)) = x*y + ip (xs,ys);
+ip ([1,2,3], [1,2,3]);
+
+
+(*Írjuk meg iteratívan ip-t*)
+
+List.take([1,2,3,4,5],3);
+List.drop([1,2,3,4,5],3);
+
+(*Írjuk meg a saját mytake és mydrop függvényeket. Írjuk meg iteratívan*)
+
+(*Keressük meg egy lista maximumát. Keressük meg a k-adik maximumát*)
+
