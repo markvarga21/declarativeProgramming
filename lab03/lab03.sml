@@ -10,7 +10,7 @@ fun ([] ++ xs) = xs
   | (x::xs) ++ ys = x :: (xs ++ ys);
 
 fun revl [] = []
-  | revl (x::xs) = (revl xs) ++ [x];
+  | revl(x::xs) = revl(xs) ++ [x];
 
 revl [1,2,3];
 
@@ -70,3 +70,4 @@ fun maxl' [m] = m
 else maxl' ms;
 
 maxl' [1,5,12,10,8];
+
