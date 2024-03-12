@@ -36,8 +36,89 @@ val revPrimePre = rev primePre;
 primeDiv(126, revPrimePre);
 
 (*számoljuk ki lkkt (n,m)-et, ahol lkkt a legkisebb közös többszörös*)
-(*számoljuk ki log2 n egészrészt*)
+fun genSub(0) = []
+  | genSub(x) = 
+    if x-1 > 1 then x-1 :: genSub(x-1)
+    else [];
+fun printList([]) = ()
+  | printList(x::xs) = (
+      print(Int.toString x ^ " ");
+      printList(xs)
+    );
+fun countNumInList(_, []) = 0
+  | countNumInList(num, x::xs) =
+      if x = num then 1 + countNumInList(num, xs)
+      else countNumInList(num, xs);
+fun pow(num, count, init) =
+  if init < count then num * pow(num, count, init+1)
+  else 1;
+val primePre1 = genPrimeTo(72, genSub'(72)); 
+val primeDiv1 = primeDiv(72, primePre1);
+countNumInList(5, primeDiv1);
+
+val primePre2 = genPrimeTo(90, genSub'(90)); 
+val primeDiv2 = primeDiv(90, primePre2);
+
+fun generatePrimeDivsForNums(a, b) =
+  if a >= b then primeDiv(a, genPrimeTo(a, genSub'(a)))
+  else primeDiv(b, genPrimeTo(b, genSub'(b)));
+fun len([]) = 0
+  | len(x::xs) = 1 + len(xs);
+fun max(_, [], []) = ~1
+  | max(n, x, y) =
+    let
+      val countNinX = countNumInList(n, x) and countNinY = countNumInList(n, y)
+    in
+      if countNinX >= countNinY then pow(n, countNinX, 0)
+      else (
+        if countNinX = 0 then pow(n, countNinY, 0)
+        else pow(n, countNinY, 0)
+      )
+    end;
+max(2, [2, 2, 2, 3, 3], [2, 3, 3, 5]);
+fun at(_, [], _) = ~1
+  | at(index, x::xs, init) =
+    if init = index then x
+    else at(index, xs, init+1);
+fun removeFromList(_, []) = []
+  | removeFromList(num, [a]) =
+    if a = num then []
+    else [a]
+  | removeFromList(num, a::b::xs) =
+    if a = num then removeFromList(num, b::xs)
+    else a :: removeFromList(num, b::xs);
+removeFromList(5, [2, 2, 3, 2, 1]);
+fun lkkt(n, m) =
+  let
+    val primeDivs = generatePrimeDivsForNums(n, m)
+        and prod = ref 1 and i = ref 0
+        and primeDivN = ref(primeDiv(n, genPrimeTo(n, genSub'(n)))) and primeDivM = ref(primeDiv(m, genPrimeTo(m, genSub'(m))))  
+  in
+    while (!i) < len(primeDivs) do (
+       prod := !prod * max(at(!i, primeDivs , 0), !primeDivN, !primeDivM);
+        primeDivN := removeFromList(at(!i, primeDivs , 0), !primeDivN);
+        primeDivM := removeFromList(at(!i, primeDivs , 0), !primeDivM);
+       (*print(Int.toString(max(at(!i, primeDivs , 0), primeDivN, primeDivM)) ^ "\n");*)
+       i := !i + 1
+  );
+  !prod
+  end;
+lkkt(990, 264);
+
+
 (*számoljuk ki rekurzívan power (2, n)*)
+fun pow2(n, init) =
+  if init < n then 2 * pow2(n, init+1)
+  else 1;
+pow2(10, 0);
+
+(*számoljuk ki log2 n egészrészt*)
+fun log2_whole(n, init) =
+  if pow2(init+1, 0) > n then init
+  else log2_whole(n, init+1);
+log2_whole(160, 1);
+
+
 (*oldjuk meg a másodfokú egyenletet*)
 fun solve(a, b, c) =
     let

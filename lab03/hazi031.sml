@@ -1,5 +1,7 @@
-﻿(*keressük meg a k-adik maximumát*)
-(*prefixum, suffixum, sublist*)
+﻿(* Keressük meg a k-adik maximumát *)
+
+
+(* Prefixum, suffixum, sublist *)
 fun sum([]) = 0
   | sum([a]) = a
   | sum(a::x) = a + sum(x);
@@ -7,14 +9,14 @@ sum [1,2];
 fun prefixum([]) = []
   | prefixum(a::b::x) = sum(a) :: prefixum(b::x);
 
-(*keressük meg egy lista maximális hosszúságú, monoton növekvő részlistáját, *)
+(* Keressük meg egy lista maximális hosszúságú, monoton növekvő részlistáját. *)
 fun subl([]) = []
   | subl(a::b::x) =
       if a <= b then a :: subl(b::x)
       else [a];
 subl [1, 2, 3, 4, 1, 0];
 
-(*keressük meg egy lista azon részlistáit, ahol az elemek összege négyzetszám*)
+(* Keressük meg egy lista azon részlistáit, ahol az elemek összege négyzetszám. *)
 fun isSquare(numb) =
     if numb <= 0 then false
     else
@@ -31,7 +33,25 @@ fun isSquare(numb) =
 sublSq [4, 4, 1, 2];*) 
 
 (*keressük meg egy lista azon részlistáit, ahol az elemek összege egy adott S érték*)
+fun sublSum([], _) = []
+  | sublSum(a::b::x, s) =
+      if sum(a::b) = s then a :: sublSum(b::x, s)
+      else sublSum(b::x, s);
+sublSum([1, 2, 3, 4, 1, 0], 4);
+
 (*keressük meg egy lista azon elemeit, melyek összege egy adott S érték*)
+fun sum([]) = 0
+  | sum([a]) = a
+  | sum(a::x) = a + sum(x);
+sum [1, 2, 3, 4];
+
+
+(*fun sublSum([],_) = []
+  | sublSum(a::b::x, s) =
+      if sum(a::b) = s then a :: sublSum(b::x, s)
+      else sublSum(b::x, s);
+sublSum([1, 2, 3, 4, 1, 0], 4);*)
+
 
 (*adjuk meg egy szám valódi osztói listáját (nem egy és nem önmaga)*)
 fun genSub(0) = []
